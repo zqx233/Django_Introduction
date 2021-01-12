@@ -95,4 +95,83 @@ url不仅是静态的，也可以是动态匹配，向视图传递参数，在pa
 返回给用户的是响应对象
 作用，接收并处理请求，调用模型和模板，响应请求
 ## HttpResquest
-是从web服务器传递过来的请求对象，结果Django框架封装产生的，封装了原始的Http请求
+是从web服务器传递过来的请求对象，结果Django框架封装产生的，封装了原始的Http请求。
+
+常见用法如下
+
+```python
+# request常用属性
+# get传参的获取
+print(request.GET)  # GET quersetDict，不能修改
+# 获取单一值
+print(request.GET.get('username'))
+# 获取多值
+print(request.GET.getlist('age'))  # 返回值是一个列表
+
+# POST传参
+print(request.POST.get('username'))
+print(request.POST.getlist('hobby'))
+
+# 获取请求方法
+print(request.method)  # 返回方法是GET或POST　
+
+# 获取请求路径
+print(request.path)
+
+# 其他请求属性
+print(request.META)
+
+# 客户端地址
+print(request.META.get('REMOTE_ADDR'))
+# 来源页面
+print(request.META.get('HTTP_REFERER'))
+
+# 常用方法
+print(request.get_full_path())  # 请求路径＋查询字符串
+print(request.get_host())  # 主机名和端口
+print(request.build_absolute_uri())  # 完整的url
+
+# 获取请求参数的字典 由queryDict转dict
+print(request.GET.dict())
+```
+
+其中，QueryDict是Dict的子类，所有的值都是列表，用于存储从请求中传递来的参数。
+
+* HttpRequest中的QueryDict是不可变的，只能获取值，不能修改。
+* QueryDict键值对都是字符串
+* QueryDict中一个键可以对应多个值
+
+## HttpResponse
+
+每一个视图必须返回一个响应对象，HttpResponse对象由程序员创建并返回。
+
+常用方法如下：
+
+```python
+def handle_response(request):
+    res = HttpResponse("响应对象")
+    res.content_type = "text/html"
+    res.status_code = 400 # 人为设置状态码
+    return res
+
+    # render返回响应对象，render只是HttpResponse的包装，还是会返回一个HttpResponse对象，第二个参数为模板，context参数为向模板传递的变量
+    res = render(request, 'index.html', context = '变量名': '值')
+    return res
+
+    # jsonresponse 可以返回json字符串，一般时候可以把字典，列表转换为json返回给前端，字典，列表只能包含内置类型
+    return JsonResponse({'name': 'tom'})
+    # 如果参数不是字典，必须把safe设置为false
+    return JsonResponse([1, 2, 3, 4, 5], safe=False)
+```
+
+## 重定向
+
+服务端发现收到的请求要求获取的资源在另一个位置时，可以使用重定向发起新的请求访问正确的资源位置。
+
+```python
+def handle_redirect(request):
+    # 重定向到指定路由地址，参数就是路由
+    return HttpResponseRedirect('/app/')
+    # 可用缩写
+    return redirect('/app/')
+```
