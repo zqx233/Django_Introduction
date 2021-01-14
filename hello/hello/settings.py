@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'polls',   #把自己的应用安装，否则不能用
+    'polls',  # 把自己的应用安装，否则不能用
     'App',
+    'App02',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'hello.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [], # 模板目录，默认在应用下
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # 模板目录，默认在应用下
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

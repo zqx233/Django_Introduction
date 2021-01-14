@@ -1,8 +1,8 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
-
 # Create your views here.
+from django.urls import reverse
 
 
 def index(request):
@@ -68,4 +68,16 @@ def handle_redirect(request):
     # 重定向到指定路由地址，参数就是路由
     # return HttpResponseRedirect('/app/')
     # 可用缩写
-    return redirect('/app/')
+    # return redirect('/app/')
+    # 应用外跳转，参数为绝对地址
+    # return redirect('https://www.baidu.com')
+    # 带参数重定向
+    # return redirect('/app/tel/{}/'.format('12345678'))
+    # return redirect('/app/tel/12345678')
+
+    # 反向定位：由应用的命名空间：name来确定路由，应用命空间见url.py
+    # return redirect(reverse('App:index'))  # 不带参数
+    # 带参数，如果参数有名字，必须使用关键字传参的方式
+    # return redirect(reverse('App:tel', kwargs={'tel': '12345678'}))
+    # 没名字，用args传参，可以时列表或元组
+    return redirect(reverse('App:tel', args=('12345678',)))  # 元组只有一个元素的话后面要加，

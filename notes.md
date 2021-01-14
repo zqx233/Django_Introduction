@@ -104,7 +104,8 @@ url不仅是静态的，也可以是动态匹配，向视图传递参数，在pa
 # get传参的获取
 print(request.GET)  # GET quersetDict，不能修改
 # 获取单一值
-print(request.GET.get('username'))
+print(request.GET.get('username'))  # 如果username不存在，会返回None
+print(request.GET['username'])  # 如果username不存在，会报错
 # 获取多值
 print(request.GET.getlist('age'))  # 返回值是一个列表
 
@@ -174,4 +175,45 @@ def handle_redirect(request):
     return HttpResponseRedirect('/app/')
     # 可用缩写
     return redirect('/app/')
+	# 应用外跳转，参数为绝对地址
+    return redirect('https://www.baidu.com')
+    # 带参数重定向
+    return redirect('/app/tel/{}/'.format('12345678'))
+    return redirect('/app/tel/12345678')
+
+    # 反向定位：由应用的命名空间：name来确定路由，应用命空间见url.py
+    return redirect(reverse('App:index'))  # 不带参数
+    # 带参数，如果参数有名字，必须使用关键字传参的方式
+    return redirect(reverse('App:tel', kwargs={'tel': '12345678'}))
+    # 没名字，用args传参，可以时列表或元组
+    return redirect(reverse('App:tel', args=('12345678',)))  # 元组只有一个元素的话后面要加，
 ```
+
+## 错误视图
+
+### 404错误及视图
+
+url匹配失败后，Django会调用内置的404模板显示，在开发阶段开启调试模式时，会显示详细信息，在产品上线时应关闭，关闭后会显示一个标准的错误页面。
+
+```
+# setting.py
+DEBUG = False
+```
+
+404页面可以自定义，在项目templates目录中添加404.html，在setting.py中设置好模板路径，Django需要显示404页面时就会调用该界面。
+
+```
+# 模板配置
+TEMPLATES = [
+    {
+        ...
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], 
+        ...
+    },
+]
+```
+
+其他错误视图方法一致。
+
+# 模板
+
