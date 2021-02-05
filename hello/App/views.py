@@ -7,7 +7,7 @@ from django.urls import reverse
 
 def index(request):
     # return HttpResponse("Hello world")
-    return render(request, "index.html", context={"title": 'Django', "name": '中国'})
+    return render(request, "Appindex.html", context={"title": 'Django', "name": '中国'})
 
 
 def get_phone(request, tel):
@@ -55,7 +55,7 @@ def handle_response(request):
     # return res
 
     # render返回响应对象
-    # res = render(request, 'index.html')
+    # res = render(request, 'Appindex.html')
     # return res
 
     # jsonresponse 可以返回json字符串，一般时候可以把字典，列表转换为json返回给前端，字典，列表只能包含内置类型

@@ -156,7 +156,7 @@ def handle_response(request):
     return res
 
     # render返回响应对象，render只是HttpResponse的包装，还是会返回一个HttpResponse对象，第二个参数为模板，context参数为向模板传递的变量
-    res = render(request, 'index.html', context = '变量名': '值')
+    res = render(request, 'Appindex.html', context = '变量名': '值')
     return res
 
     # jsonresponse 可以返回json字符串，一般时候可以把字典，列表转换为json返回给前端，字典，列表只能包含内置类型
@@ -216,4 +216,55 @@ TEMPLATES = [
 其他错误视图方法一致。
 
 # 模板
+
+模板⽤于快速⽣成动态⻚⾯返回给客户端，模板是⼀个⽂本，⽤于分离⽂档的表现 形式和内容。 模板定义了占位符以及各种⽤于规范⽂档该如何显示的模板标签。 模板通常⽤于产⽣HTML，但是Django的模板也能产⽣任何基于⽂本格式的⽂档。 模板包含两部分：
+
+- html代码
+- 模板标签
+
+## 模板位置
+
+1. 模板可以放在应用中的`templates`目录，不需要注册，但有多个应用的时候不能复用页面
+
+2. 模板也可以放在工程局目录下的`templates`目录下，如果有多个应用，可以调用相同的页面，需要注册，修改项目配置文件`setings.py`
+
+   ```
+   TEMPLATES = [
+       {
+           ......
+           'DIRS': [os.path.join(BASE_DIR, 'templates')],  # 模板目录，默认在应用下
+           'APP_DIRS': True,  # 是否在应用目录下查找模板文件
+           ......
+               ],
+           },
+       },
+   ]
+   ```
+
+Django在查找模板时，不是只在当前app的模板文件中查找，而是在所有app的模板目录中查找，一旦找到就停止，所以如果模板名字相同时可能会找错，可以在应用模板目录下再建立一个app同名模板文件夹解决，建议都放在工程模板目录下方便管理。
+
+## 模板渲染
+
+就是将html中的标签替换掉
+
+### loader加载
+
+可以加载一次模板，然后进行多次渲染
+
+```
+def load_template(request):
+    # 加载模板文件，生成模板对象
+    obj = loader.get_template('example.html')
+    res = obj.render({'name': 'admin'})
+    # 渲染的结果生成html源文件（字符串）
+    return HttpResponse(res)
+```
+
+### render
+
+```
+def load_template(request):
+	# render加载和渲染一起进行，是一种快捷方式
+    return render(request, 'example.html', context={'name':'admin'})
+```
 
