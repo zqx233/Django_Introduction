@@ -268,3 +268,49 @@ def load_template(request):
     return render(request, 'example.html', context={'name':'admin'})
 ```
 
+## 模板语法
+
+### 变量
+
+在html中，使用变量格式为`{{ 变量名 }}`，变量名就是render中context的键
+
+- 列表、元组时，可以使用索引，但不能使用负索引，格式：变量.索引
+
+- 字典时，格式：变量.key
+
+- 对象时，格式：对象.属性   对象.方法名（方法不能有参数）
+
+当模板系统遇到.时，按照以下顺序查找
+
+- 字典
+- 属性
+- 方法
+- 列表索引
+
+如果模板中引用的变量未传值，则会被置为空，不会报错，除非对其进行了操作
+
+### 过滤器
+
+过滤器是在变量显示之前修改值的一个方法，格式为`{{ 变量名|方法:参数 }}`，过滤器可以串联调用，具体内置过滤器方法见[官方文档](https://docs.djangoproject.com/zh-hans/2.2/ref/templates/builtins/#filters)。
+
+# 一些遇到的问题
+
+## 解决Debug页面有时无法显示正常错误信息
+
+使用runserver运行后，出错信息无法正常显示在控制台和前端，控制台显示`UnicodeDecodeError: 'gbk' codec can't decode byte 0xa6 in position 9737: illegal multibyte sequence`，前端页面显示`A server error occurred. Please contact the administrator.`
+
+解决方法：打开`python安装路径\Lib\site-packages\django\views\debug.py`修改约为331行处的代码：
+
+```
+with Path(CURRENT_DIR, 'templates', 'technical_500.html').open() as fh:
+```
+
+修改为：
+
+```
+with Path(CURRENT_DIR, 'templates', 'technical_500.html').open(encoding='utf-8') as fh:
+```
+
+可能是因为文件中有中文导致无法正常显示。
+
+> 参考链接：https://blog.csdn.net/qq_37232731/article/details/89684409

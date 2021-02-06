@@ -21,4 +21,18 @@ def load_template(request):
     # return HttpResponse(res)
 
     # render加载和渲染一起进行，是一种快捷方式
-    return render(request, 'example.html', context={'name':'admin'})
+    return render(request, 'example.html', context={'name': 'admin'})
+
+
+def handle_var(request):
+    num = 10
+    name = '一个字符串'
+    students = [10, 20, 30, 50]
+    student = {'name': '马云', 'age': 30}
+    return render(request, 'App02/var.html', locals())
+
+
+def handle_filter(request):
+    num = 10
+    name = '一个字符串'
+    return render(request, 'App02/过滤器.html', locals())
