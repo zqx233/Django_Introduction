@@ -293,6 +293,78 @@ def load_template(request):
 
 过滤器是在变量显示之前修改值的一个方法，格式为`{{ 变量名|方法:参数 }}`，过滤器可以串联调用，具体内置过滤器方法见[官方文档](https://docs.djangoproject.com/zh-hans/2.2/ref/templates/builtins/#filters)。
 
+#### 自定义过滤器
+
+- 在app目录下新建一个包：templatetags
+- 在包中创建一个py文件
+
+```
+from django import template
+
+# 建立模板对象
+register = template.Library()
+
+# name表示在模板中使用的过滤器名称
+@register.filter(name='sub1')
+def sub(value):  # 参数必须是1~2个
+    return value - 1
+```
+
+- 在模板中引用
+
+```
+{% load mytag %} # 加载⾃定义过滤器的模块
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>Title</title>
+</head>
+<body>
+{{ 5|sub1 }} # 使⽤⾃定义过滤器
+</body>
+</html>
+```
+
+### 内建标签
+
+格式：`{% tag %}`
+
+1. if标签
+
+   ```html
+   <body>
+   {# 不可以使用小括号，可以嵌套 #}
+   {% if num < 10 %}
+   <p>
+       小于10
+   </p>
+   {% elif num < 20 %}
+   <p>
+       小于20
+   </p>
+   {% else %}
+   <p>
+       其他
+   </p>
+   {% endif %}
+   </body>
+   ```
+
+2. for标签
+
+   ```
+   <p>
+       {% for value in l1 reversed %}  加reversed可以实现反向遍历
+   <li>{{ value }}</li>
+       {% empty %}
+   数据不存在
+   {% endfor %}
+   </p>
+   ```
+
+   
+
 # 一些遇到的问题
 
 ## 解决Debug页面有时无法显示正常错误信息
@@ -314,3 +386,4 @@ with Path(CURRENT_DIR, 'templates', 'technical_500.html').open(encoding='utf-8')
 可能是因为文件中有中文导致无法正常显示。
 
 > 参考链接：https://blog.csdn.net/qq_37232731/article/details/89684409
+

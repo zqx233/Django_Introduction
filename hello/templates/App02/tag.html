@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>标签</title>
+</head>
+<body>
+{# 不可以使用小括号 #}
+{% if num < 10 %}
+<p>
+    小于10
+</p>
+{% elif num < 20 %}
+<p>
+    小于20
+</p>
+{% else %}
+<p>
+    其他
+</p>
+{% endif %}
+
+<p>
+    {% for value in l1 reversed %}
+<li>{{ value }}</li>
+    {% empty %}
+数据不存在
+{% endfor %}
+</p>
+</body>
+</html>

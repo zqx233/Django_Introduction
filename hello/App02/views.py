@@ -36,3 +36,9 @@ def handle_filter(request):
     num = 10
     name = '一个字符串'
     return render(request, 'App02/过滤器.html', locals())
+
+
+def handle_tag(request):
+    l1 = [10, 20, 30, 40]
+    num = 21
+    return render(request, 'App02/tag.html', locals())

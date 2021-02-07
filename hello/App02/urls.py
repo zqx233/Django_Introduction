@@ -10,5 +10,7 @@ urlpatterns = [
     # 变量
     path('var/', views.handle_var, name='var'),
     # 过滤器
-    path('filter/', views.handle_filter, name='filter')
+    path('filter/', views.handle_filter, name='filter'),
+    # 内建标签
+    path('tag/', views.handle_tag, name='tag')
 ]
