@@ -121,3 +121,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 # 静态资源请求路径
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')  # static不要带目录分割线，可存在多个目录
+]

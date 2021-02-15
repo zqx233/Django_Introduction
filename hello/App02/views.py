@@ -42,3 +42,19 @@ def handle_tag(request):
     l1 = [10, 20, 30, 40]
     num = 21
     return render(request, 'App02/tag.html', locals())
+
+
+def include_div(request):
+    return render(request, "App02/list.html")
+
+
+def handle_url(request):
+    return render(request, 'App02/menu.html')
+
+
+def handle_extends(request):
+    return render(request, 'App02/child.html')
+
+
+def handle_static(request):
+    return render(request, 'App02/wenzhang_xinwen.html')

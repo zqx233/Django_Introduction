@@ -12,5 +12,13 @@ urlpatterns = [
     # 过滤器
     path('filter/', views.handle_filter, name='filter'),
     # 内建标签
-    path('tag/', views.handle_tag, name='tag')
+    path('tag/', views.handle_tag, name='tag'),
+    # include标签
+    path('include/', views.include_div, name='include'),
+    # 模板中url
+    path('url/', views.handle_url, name='url'),
+    # 模板继承
+    path('extends/', views.handle_extends, name='extends'),
+    # 静态资源
+    path('wenzhang/', views.handle_static, name='wenzhang')
 ]

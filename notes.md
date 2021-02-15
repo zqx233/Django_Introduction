@@ -330,7 +330,7 @@ def sub(value):  # 参数必须是1~2个
 
 格式：`{% tag %}`
 
-1. if标签
+#### if标签
 
    ```html
    <body>
@@ -351,9 +351,9 @@ def sub(value):  # 参数必须是1~2个
    </body>
    ```
 
-2. for标签
+#### for标签
 
-   ```
+   ```html
    <p>
        {% for value in l1 reversed %}  加reversed可以实现反向遍历
    <li>{{ value }}</li>
@@ -361,6 +361,136 @@ def sub(value):  # 参数必须是1~2个
    数据不存在
    {% endfor %}
    </p>
+   ```
+
+#### 防跨站攻击csrf
+   防止网络收到第三方服务器恶意攻击，拒绝不是本网站表单传递来的信息，csrf相当于在表单中添加了一个隐藏的输入框，向服务器提交一个唯一的随机字符串用于验证服务器验证表单是否是本服务器的表单
+   开启该功能首先要在项目设置文件中启用，默认启用，如需全站关闭则注释即可
+
+   ``` python settings.py
+   MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
+   ]
+   ```
+
+   在模板中添加`{% csrf_token %}`，不添加的话提交表单时会403
+
+   ``` html example.html
+   <form action="" method="post">
+    {% csrf_token %}
+    <input type="text" name="username">
+    <p><input type="submit"></p>
+   </form>
+   ```
+
+   如需要局部禁止csrf，在该视图函数前添加装饰器`@csrf_exempt`
+
+   ``` python views.py
+   from django.views.decorators.csrf import csrf_exempt,csrf_protect
+   @csrf_exempt
+   def csrf1(request):
+    pass
+   ```
+
+   #### include标签
+
+可以在一个模板中使用该标签`{% include "另一个模板位置" %}`在另一个模板中调用其他模板，实现复用
+
+``` html templates/App02/list.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% include "App02/div.html" %}
+</body>
+</html>
+```
+
+``` html templates/App02/div.html
+<div>
+被包含的文件
+</div>
+```
+
+``` python App02/views.py
+def include_div(request):
+    return render(request, "App02/list.html")
+```
+
+#### url标签
+
+在模板中url标签可用于反向解析
+
+``` html templates/App02/menu.html
+<body>
+<ul>
+    <li>
+        <a href="{% url 'App02:index' %}">动态生成路由地址不带参数跳转</a>
+        <a href="{% url 'App02:index' 参数='' %}">动态生成路由地址带参数跳转</a>
+    </li>
+</ul>
+</body>
+```
+
+## 模板继承
+
+模板继承就是先写好一个基础模板，其他页面有中有重复的地方都可以继承基础模板，例如博客，导航网站的页眉页脚，并根据需要重写部分内容
+
+- `{% extends %}` 继承⽗模板 
+- `{% block %} `⼦模板可以重载这部分内容
+- `{{ block.super }}`调⽤⽗模板的代码
+
+``` html templates/App02/base.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+
+{% endblock %}
+</body>
+</html>
+```
+
+``` html templates/App02/child.html
+{% extends 'App02/base.html' %}
+{% block content %}
+<h2>子页面重写的部分</h2>
+{% endblock %}
+```
+
+如果在模板中使用extends标签时，必须为模板中的第一个标记，否则继承将不起作用
+
+## 静态资源配置
+
+1. 新建静态资源目录，一般在根目录下
+
+2. 在`setting.py`中注册
+
+   ``` python settings.py
+   STATICFILES_DIRS = [
+       os.path.join(BASE_DIR, 'static')  # static不要带目录分割线，可存在多个目录
+   ]
+   ```
+
+3. 在模板中加载资源
+   资源路径可以使用绝对路径
+
+   ``` html 模板.html
+   <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+   ```
+
+   也可以使用标签
+
+   ``` html 模板.html
+   {% load static %} #放置到模板开头
+    <img src="{% static 'img/img.jpeg' %}" alt=""> # 动态写法，建议⽤这种
    ```
 
    
