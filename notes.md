@@ -6,7 +6,7 @@ Django2.2[中文文档](https://docs.djangoproject.com/zh-hans/2.2/)
 
 1. 在PyCharm中新建项目，选择虚拟python环境，然后在PyCharm中安装Django库，可以使用豆瓣等国内镜像快一点。安装好后可以在终端中执行`import django` `django.get_version()`如果没报错即安装成功。
 1. 新建好项目之后，在终端中的项目目录下执行`django-admin startproject hello`即可创建django项目，会在目录中生成项目文件。结构如下
-![image.png](https://cdn.nlark.com/yuque/0/2021/png/1826767/1610025373054-41979386-7a44-4932-b4a3-e929e8f28842.png#align=left&display=inline&height=104&margin=%5Bobject%20Object%5D&name=image.png&originHeight=104&originWidth=210&size=19723&status=done&style=shadow&width=210)
+<img src="https://cdn.jsdelivr.net/gh/zqx233/Image/image/20210216180530.png" alt="image.png" style="zoom:120%;" />
 1. 在终端中的项目目录下运行`python manage.py runserver`即可运行django框架，点击终端显示的链接如果有成功界面即运行成功。
 1. 创建好项目后，需要修改项目配置文件setting.py
 ```
@@ -469,7 +469,7 @@ def include_div(request):
 
 ## 静态资源配置
 
-1. 新建静态资源目录，一般在根目录下
+1. 新建静态资源目录`static`，一般在根目录下
 
 2. 在`setting.py`中注册
 
@@ -493,7 +493,36 @@ def include_div(request):
     <img src="{% static 'img/img.jpeg' %}" alt=""> # 动态写法，建议⽤这种
    ```
 
-   
+# 模型
+
+   ## 数据库配置
+
+安装mysql数据库驱动
+
+``` 
+pip install mysqlclient
+```
+
+在项目设置中修改数据库配置
+
+``` diff settings.py
+DATABASES = {
+-    'default': {
+-        'ENGINE': 'django.db.backends.sqlite3',
+-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+-    }
++    'default': {
++        'ENGINE': 'django.db.backends.mysql',
++        'NAME': 'blog',  # 数据库名
++        'HOST': '127.0.0.1',  # 数据库服务器地址
++        'USER': 'root',  # 用户名
++        'PASSWORD': '123',  # 密码
++        'PORT': 3306  # 端口，不填默认3306
+    }
+}
+```
+
+
 
 # 一些遇到的问题
 
