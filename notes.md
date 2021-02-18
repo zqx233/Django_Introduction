@@ -522,6 +522,64 @@ DATABASES = {
 }
 ```
 
+如果数据库中没有blog数据库的话需要创建数据库
+
+``` mysql
+create database blog;
+```
+
+## 模型属性
+
+模型中的属性和数据库表的字段对应，必须定义，模型的属性需要定义成类属性
+
+例如：
+
+``` python App/models.py
+from django.db import models
+class User(models.Model):
+    #                                          ↓数据库表中的字段名称
+    uid = models.AutoField(primary_key=True, db_column='uid')
+    username = models.CharField(max_length=30, unique=True)
+    password = models.CharField(max_length=128)
+    regtime = models.DateTimeField(auto_now_add=True)
+
+    class Meta: # 元数据,模型本身的信息
+        #默认表名：应用名_模型名
+        db_table = 'user'  # 表名
+        ordering = ['username']  # 排序
+```
+
+其中
+
+- 自定义模型必须继承Model
+- CharField类型必须指明长度
+- 属性名不能是python的关键字
+- 属性名不能使用连续下划线
+- 定义属性时需要指定字段类型
+- 主键不用自己定义，Django会自动创建自增长主键列，如果自己定义，则Django不会再自动生成主键
+
+## 激活模型
+
+在项目目录下输入命令创建迁移文件
+
+```
+python manage.py makemigrations
+```
+
+执行迁移
+
+```
+python manage.py migrate
+```
+
+也可以根据数据库中表自动创建模型反向迁移
+
+```
+python manage.py inspectdb > App/models.py
+```
+
+数据库迁移并不是必要的
+
 
 
 # 一些遇到的问题
@@ -544,5 +602,25 @@ with Path(CURRENT_DIR, 'templates', 'technical_500.html').open(encoding='utf-8')
 
 可能是因为文件中有中文导致无法正常显示。
 
-> 参考链接：https://blog.csdn.net/qq_37232731/article/details/89684409
+### 参考链接
+
+https://blog.csdn.net/qq_37232731/article/details/89684409
+
+## 解决PyCharm Database Browser插件连接数据库报错时区问题
+
+在用Database Browser插件连接数据库时，提示失败原因是数据库时区和数据库连接工具时区不一致
+
+启动数据库，输入命令设置数据库的时区
+
+``` mysql
+set global time_zone='+8:00'
+```
+
+![image-20210218174200998](https://cdn.jsdelivr.net/gh/zqx233/Image/image/20210218174202.png)
+
+之后再连接就成功了
+
+### 参考链接
+
+https://blog.csdn.net/ZKK199704/article/details/88950106
 
