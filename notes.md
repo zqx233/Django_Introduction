@@ -566,7 +566,7 @@ class User(models.Model):
 python manage.py makemigrations
 ```
 
-执行迁移
+执行迁移，完成后会在数据库生成相应的表
 
 ```
 python manage.py migrate
@@ -579,6 +579,101 @@ python manage.py inspectdb > App/models.py
 ```
 
 数据库迁移并不是必要的
+
+## 模型的使用 
+
+### 增
+
+1. 增加单条记录
+
+   ``` python views.py
+   def handle_data(request):
+       # 增加记录
+       user = User(username='tom', password='123')
+       user.save()  # 插入数据库
+       return HttpResponse('增加成功')
+   ```
+
+2. 快捷增加单条记录
+
+   ``` python views.py
+   def handle_data(request):
+       # 便利方法
+       user = {'username': 'tom', 'password': '1234'}
+       User.objects.create(**user)
+       return HttpResponse('增加成功')
+   ```
+
+3. 批量增加多条记录
+
+   ``` python views.py
+   def handle_data(request):
+       # 批量创建
+       User.objects.bulk_create([User(username='test1'), User(username='test2')])
+       return HttpResponse('增加成功')
+   ```
+
+### 改
+
+1. 修改记录
+
+	``` python views.py
+def handle_data(request):
+    # 修改
+    user = User.objects.get(pk=1)  # pk表示主键，也可以用主键的列名
+    user.password = '3333'
+    user.save()
+    return HttpResponse('修改成功')	
+	```
+
+### 删
+
+1. 删除单条记录
+
+	``` python views.py
+def handle_data(request):
+    # 删除
+    user = User.objects.get(pk=1)
+    print(user, type(user))
+    if user:
+        user.delete()
+    return HttpResponse('删除成功')
+	```
+
+2.  批量删除记录
+
+	``` python views.py
+def handle_data(request):
+    users = User.objects.filter(uid__gte=10)  # 筛选uid大于等于10的
+    print(users)
+    users.delete()
+    return HttpResponse('删除成功')
+	```
+
+### 数据查询
+
+从数据库查询数据，首先要获取一个查询集，表示从数据库获取的对象集合，可以有零个一个或多个过滤器， 返回查询集的方法称为过滤器，过滤器根据指定的参数缩小查询结果范围，相当于sql语句中的where和limit
+
+- 过滤器可以链式调用
+- 惰性执行：创建查询集不访问数据库，当调用数据时，才会访问数据库，例如print，切片，迭代等
+
+#### 返回查询集
+
+- all()：获取所有数据
+
+``` python views.py
+User.objects.all()
+```
+
+- filter(**kwargs)：返回包含给定查找匹配的新查询集
+
+``` python views.py
+# filter 过滤器=where
+users = User.objects.filter(uid=5)  # select * from user where uid=5
+users = User.objects.filter(uid__gt=5)  # select * from user where uid>5
+   # 过滤器可以串联调用
+users = User.objects.filter(uid__gt=5).filter(uid__lt=50)  # 大于5且小于50
+```
 
 
 

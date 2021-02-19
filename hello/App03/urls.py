@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from . import views
 
 urlpatterns = [
-    # path('', ),
+    # 数据的增删改
+    path('', views.handle_data, name='data'),
+    path('query/', views.find_data, name='find'),
 ]

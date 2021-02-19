@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -26,22 +26,33 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa">
-        <schema name="blog" object-types="procedure, table, view, function" />
+        <schema name="blog" object-types="table, procedure, constraint, index, dataset trigger, view, column, function" />
+        <schema name="mysql" object-types="table, constraint, view, column" />
+        <schema name="performance_schema" object-types="table, constraint, column" />
+        <schema name="sys" object-types="table, constraint, view, column" />
       </connection>
     </loaded-nodes>
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa">
-      <console name="blog" type="STANDARD" schema="mysql" session="Main"><![CDATA[create database blog default charset =utf8]]></console>
+      <console name="blog" type="STANDARD" schema="mysql" session="Main"><![CDATA[select * from blog.`user`]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" object-ref="schemas/blog/tables/user" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
+    <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="blog.user" active-filter-id="EMPTY_FILTER">
+      <filter id="e852a571-227c-408c-a0c8-3ed7fb671265" name="1" temporary="false" custom-name="false" type="basic" join-type="AND">
+        <condition column="uid" operator="=" value="1" active="true" />
+      </filter>
+    </filter-actions>
+    <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="blog.django_admin_log" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="mysql.slave_relay_log_info" active-filter-id="f3b2871f-5007-4bf2-8eb0-7ba05d36e92b">
       <filter id="f3b2871f-5007-4bf2-8eb0-7ba05d36e92b" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND">
         <condition column="Channel_name" operator="=" value="" active="true" />
@@ -50,13 +61,20 @@
     <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="mysql.time_zone" active-filter-id="9e588e2f-3461-4b71-be78-2e16d484fa24">
       <filter id="9e588e2f-3461-4b71-be78-2e16d484fa24" name="Filter" temporary="false" custom-name="false" type="basic" join-type="AND" />
     </filter-actions>
+    <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="blog.auth_user" active-filter-id="" />
     <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="mysql.user" active-filter-id="bbdf85a8-a447-4ddf-8ac8-4b8d7cdbd7e7">
       <filter id="bbdf85a8-a447-4ddf-8ac8-4b8d7cdbd7e7" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
+    <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="blog.auth_user_groups" active-filter-id="e1009bc3-ee79-434f-9376-51e0b20d5a60">
+      <filter id="e1009bc3-ee79-434f-9376-51e0b20d5a60" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
     </filter-actions>
     <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="mysql.tables_priv" active-filter-id="998caf64-4871-48e6-9085-0b0b2a4ffa33">
       <filter id="998caf64-4871-48e6-9085-0b0b2a4ffa33" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
     </filter-actions>
-    <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="blog.polls_question" active-filter-id="646d77dd-8b75-4386-a0d9-4e65dca2c037">
+    <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="blog.auth_group" active-filter-id="c0c3f983-9e1b-4a86-b0a3-0aab811c0858">
+      <filter id="c0c3f983-9e1b-4a86-b0a3-0aab811c0858" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
+    </filter-actions>
+    <filter-actions connection-id="e0b4ce35-8b99-4269-9e92-d7ec875c37fa" dataset="blog.polls_question" active-filter-id="EMPTY_FILTER">
       <filter id="646d77dd-8b75-4386-a0d9-4e65dca2c037" name="Filter 1" temporary="false" custom-name="false" type="basic" join-type="AND" />
     </filter-actions>
   </component>
@@ -105,7 +123,7 @@
           <deprecated-pwd value="MTIz" />
         </database>
         <properties>
-          <auto-commit value="false" />
+          <auto-commit value="true" />
         </properties>
         <ssh-settings>
           <active value="false" />

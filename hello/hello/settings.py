@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'polls',  # 把自己的应用安装，否则不能用
     'App',
     'App02',
+    'App03',
 ]
 
 MIDDLEWARE = [
